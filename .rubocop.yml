@@ -15,6 +15,14 @@ Lint/AmbiguousOperator:
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
+Metrics/ClassLength:
+  CountComments: false
+  Max: 150
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 15
+
 Style/AlignHash:
   Enabled: true
   EnforcedHashRocketStyle: table

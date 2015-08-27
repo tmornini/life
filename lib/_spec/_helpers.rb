@@ -6,4 +6,4 @@ require 'bundler/setup'
 require '_spec/minitest'
 require '_spec/rspec'
 
-require 'life/formatter'
+require 'life/formatter/_module'

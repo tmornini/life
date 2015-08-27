@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+# -*- encoding : utf-8 -*-
+
+$LOAD_PATH.unshift 'lib'
+
+require 'life/state_file_reader/_module'
+
+module Life
+  generation = 0
+
+  state = StateFileReader.read
+
+  loop do
+    system 'clear'
+    puts state
+    puts "generation: #{generation}"
+    generation += 1
+    state = state.generate_next
+    gets
+  end
+end
