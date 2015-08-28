@@ -6,16 +6,18 @@ $LOAD_PATH.unshift 'lib'
 require 'life/state_file_reader/_module'
 
 module Life
+  CLS = "#{27.chr}[2J#{27.chr}[;H"
+
   generation = 0
 
   state = StateFileReader.read
 
   loop do
-    system 'clear'
+    print CLS
     puts state
     puts "generation: #{generation}"
     generation += 1
     state = state.generate_next
-    gets
+    break if generation > 1_000
   end
 end
