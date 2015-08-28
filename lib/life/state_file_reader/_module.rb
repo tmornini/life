@@ -1,5 +1,7 @@
 # -*- encoding : utf-8 -*-
 
+require 'thread'
+
 require 'life'
 
 require 'life/state/_class'
@@ -7,23 +9,27 @@ require 'life/state/_class'
 module Life
   module StateFileReader
     DEFAULTS = {
-      state_class: State,
       file_class:  File,
+      state_class: State,
       pathname:    'initial_state.txt'
     }
 
     ASTERISK = '*'
 
+    MUTEX = Mutex.new
+
     def self.read args = { }
       args = DEFAULTS.merge args
 
       cells =
-        cells_from(
-          args[:file_class]
-            .open(
-              args[:pathname]
-            )
-        )
+        MUTEX.synchronize do
+          cells_from(
+            args[:file_class]
+              .open(
+                args[:pathname]
+              )
+          )
+        end
 
       args[:state_class].new cells: cells
     end
