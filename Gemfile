@@ -1,6 +1,10 @@
 source 'https://rubygems.org'
 
-# not used in production
+gem 'celluloid'
+gem 'celluloid-pool'
+gem 'celluloid-supervision'
+
+# only used in dev and ci
 gem 'awesome_print'
 gem 'guard'
 gem 'guard-minitest'

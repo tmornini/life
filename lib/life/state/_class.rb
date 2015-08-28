@@ -11,11 +11,11 @@ module Life
     }
 
     def initialize config
-      config = DEFAULTS.merge config
+      merged = DEFAULTS.merge config
 
-      @next_cells_generator = config[:next_cells_generator]
+      @next_cells_generator = merged[:next_cells_generator].new
 
-      @cells = config[:cells]
+      @cells = merged[:cells]
     end
 
     def generate_next

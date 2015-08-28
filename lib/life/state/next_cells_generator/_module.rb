@@ -1,55 +1,38 @@
 # -*- encoding : utf-8 -*-
 
-require 'life/state/next_cell_state_determiner/_module'
+require 'life/state/new_row_generator/_module'
 
 module Life
   class State
-    module NextCellsGenerator
+    class NextCellsGenerator
       DEFAULTS = {
-        next_cell_state_determiner: NextCellStateDeterminer
+        new_row_generator: NewRowGenerator
       }
 
-      def self.generate args = { }
-        new_cells args
+      def initialize config = { }
+        merged = DEFAULTS.merge config
+
+        @new_row_generators = merged[:new_row_generator].pool
       end
 
-      private
-
-      def self.new_cells args
-        args = DEFAULTS.merge args
-
+      def generate args = { }
         old_cells = args[:cells]
 
-        the_new_cells = [ ]
+        futures = [ ]
 
         old_cells.each_with_index do |old_row, y|
-          the_new_cells.push(
-            new_row(
-              args.merge(
-                y: y
-              ),
-              old_row
-            )
+          futures <<
+            @new_row_generators
+              .future
+                .generate(
+                  args.merge(
+                    y:       y,
+                    old_row: old_row
+                  )
           )
         end
 
-        the_new_cells
-      end
-
-      def self.new_row args, old_row
-        the_new_row = [ ]
-
-        old_row.each_with_index do |alive, x|
-          the_new_row.push(
-            args[:next_cell_state_determiner]
-              .determine(
-                args.merge x:     x,
-                           alive: alive
-              )
-          )
-        end
-
-        the_new_row
+        futures.collect { |future| future.value }
       end
     end
   end
