@@ -10,10 +10,10 @@ module Life
       }
 
       def self.determine args
-        args = DEFAULTS.merge args
+        merged = DEFAULTS.merge args
 
         live_neighbor_count =
-          args[:live_neighbor_counter].count args
+          merged[:live_neighbor_counter].count args
 
         if args[:alive]
           live_neighbor_count == 2 || live_neighbor_count == 3

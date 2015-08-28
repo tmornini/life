@@ -19,19 +19,19 @@ module Life
     MUTEX = Mutex.new
 
     def self.read args = { }
-      args = DEFAULTS.merge args
+      merged = DEFAULTS.merge args
 
       cells =
         MUTEX.synchronize do
           cells_from(
-            args[:file_class]
+            merged[:file_class]
               .open(
-                args[:pathname]
+                merged[:pathname]
               )
           )
         end
 
-      args[:state_class].new cells: cells
+      merged[:state_class].new cells: cells
     end
 
     private

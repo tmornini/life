@@ -10,20 +10,10 @@ module Life
       }
 
       def self.generate args = { }
-        new_cells args
-      end
+        new_cells = [ ]
 
-      private
-
-      def self.new_cells args
-        args = DEFAULTS.merge args
-
-        old_cells = args[:cells]
-
-        the_new_cells = [ ]
-
-        old_cells.each_with_index do |old_row, y|
-          the_new_cells.push(
+        args[:cells].each_with_index do |old_row, y|
+          new_cells.push(
             new_row(
               args.merge(
                 y: y
@@ -33,15 +23,19 @@ module Life
           )
         end
 
-        the_new_cells
+        new_cells
       end
 
+      private
+
       def self.new_row args, old_row
+        merged = args.merge DEFAULTS
+
         the_new_row = [ ]
 
         old_row.each_with_index do |alive, x|
           the_new_row.push(
-            args[:next_cell_state_determiner]
+            merged[:next_cell_state_determiner]
               .determine(
                 args.merge x:     x,
                            alive: alive
